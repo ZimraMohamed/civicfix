@@ -8,7 +8,7 @@ struct ReportViewModelTests {
         (ReportViewModel(service: service), service)
     }
 
-    // MARK: Tags
+    // Tags
 
     @Test func toggleAddsThenRemoves() {
         let (vm, _) = make()
@@ -60,7 +60,7 @@ struct ReportViewModelTests {
         #expect(vm.visibleTags == HashTag.suggestions + ["custom"])
     }
 
-    // MARK: Submit
+    //Submit
 
     @Test func submitWithoutPhotoShowsError() async {
         let (vm, service) = make()
@@ -164,7 +164,7 @@ struct ReportViewModelTests {
     }
 }
 
-// MARK: - UIImage JPEG helpers
+// UIImage JPEG helpers
 
 @MainActor
 struct ImageJPEGTests {

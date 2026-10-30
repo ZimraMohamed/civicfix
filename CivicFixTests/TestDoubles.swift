@@ -2,9 +2,8 @@ import Foundation
 import UIKit
 @testable import CivicFix
 
-// MARK: - Shared test helpers
-// Hand-written fakes for the service protocols, so view models and SessionStore
-// can be tested without Firebase, the network, Face ID or the Keychain.
+// Shared test helpers
+
 
 enum TestError: Error { case boom }
 

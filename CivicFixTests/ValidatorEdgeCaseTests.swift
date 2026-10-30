@@ -1,7 +1,7 @@
 import Testing
 @testable import CivicFix
 
-/// Extra cases on top of Tests/ValidatorTests.swift.
+
 struct ValidatorEdgeCaseTests {
     @Test func emailIsTrimmedBeforeChecking() {
         #expect(Validator.isValidEmail("  a@b.com \n"))

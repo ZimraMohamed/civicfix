@@ -3,7 +3,7 @@ import SwiftUI
 import MapKit
 @testable import CivicFix
 
-// MARK: - HashTag
+// HashTag
 
 struct HashTagTests {
     @Test func normalizeStripsSymbolsAndLowercases() {
@@ -39,7 +39,7 @@ struct HashTagTests {
     }
 }
 
-// MARK: - ReportStatus / UserRole
+//  ReportStatus / UserRole
 
 struct ReportStatusTests {
     @Test func rawValuesMatchFirestore() {
@@ -69,7 +69,7 @@ struct UserRoleTests {
     }
 }
 
-// MARK: - UserAccount / UserProfile
+// UserAccount / UserProfile
 
 struct UserAccountTests {
     @Test func initialsUseFirstTwoWords() {
@@ -124,7 +124,7 @@ struct UserProfileTests {
     }
 }
 
-// MARK: - Error messages
+// Error messages
 
 struct ErrorMessageTests {
     @Test func authErrorsHaveSpecificMessages() {
@@ -155,7 +155,7 @@ struct ErrorMessageTests {
     }
 }
 
-// MARK: - AppAppearance
+//  AppAppearance
 
 @MainActor
 struct AppAppearanceTests {
@@ -175,7 +175,7 @@ struct AppAppearanceTests {
     }
 }
 
-// MARK: - fittedRegion
+// fittedRegion
 
 @MainActor
 struct FittedRegionTests {

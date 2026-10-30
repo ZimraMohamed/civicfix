@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import CivicFix
 
-// MARK: - Manage users
+// Manage users
 
 @MainActor
 struct ManageUsersViewModelTests {

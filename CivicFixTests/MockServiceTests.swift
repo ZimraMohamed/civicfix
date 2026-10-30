@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import CivicFix
 
-// MARK: - Unavailable / mock report services
+// Unavailable / mock report services
 
 struct UnavailableReportServiceTests {
     @Test func everyOperationFailsWithNotConfigured() async {
@@ -39,7 +39,7 @@ struct MockReportServiceTests {
     }
 }
 
-// MARK: - Mock user service
+// Mock user service
 
 struct MockUserServiceTests {
     @Test func loadReturnsSeedUsersNewestFirst() async throws {
@@ -85,9 +85,8 @@ struct MockUserServiceTests {
     }
 }
 
-// MARK: - Mock auth service (offline backend)
-// It persists to UserDefaults.standard, so these tests run one at a time and
-// remove their keys before and after.
+// Mock auth service (offline backend)
+
 
 @Suite(.serialized)
 struct MockAuthServiceTests {

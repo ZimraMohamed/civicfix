@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import CivicFix
 
-// MARK: - Admin reports
+// Admin reports
 
 @MainActor
 struct AdminReportsViewModelTests {
@@ -151,7 +151,7 @@ struct AdminReportsViewModelTests {
     }
 }
 
-// MARK: - Officer dashboard
+// Officer dashboard
 
 @MainActor
 struct OfficerDashboardViewModelTests {
@@ -251,7 +251,7 @@ struct OfficerDashboardViewModelTests {
     }
 }
 
-// MARK: - Public dashboard
+// Public dashboard
 
 @MainActor
 struct PublicDashboardViewModelTests {
@@ -313,7 +313,7 @@ struct PublicDashboardViewModelTests {
     }
 }
 
-// MARK: - Reports map
+// Reports map
 
 @MainActor
 struct ReportsMapViewModelTests {

@@ -3,7 +3,7 @@ import CoreData
 import Foundation
 @testable import CivicFix
 
-// MARK: - SessionStore
+// SessionStore
 
 @MainActor
 struct SessionStoreTests {
@@ -152,7 +152,7 @@ struct SessionStoreTests {
     }
 }
 
-// MARK: - In-memory repository
+// In-memory repository
 
 @MainActor
 struct InMemorySessionRepositoryTests {
@@ -172,12 +172,11 @@ struct InMemorySessionRepositoryTests {
     }
 }
 
-// MARK: - Core Data repository (in-memory store)
+// Core Data repository (in-memory store)
 
 @MainActor
 struct CoreDataSessionRepositoryTests {
-    /// A throw-away in-memory container that reuses the app's compiled model, so
-    /// Core Data never sees two models claiming the `UserSession` class.
+    
     private func makeContainer() -> NSPersistentContainer {
         let model = PersistenceController.shared.container.managedObjectModel
         let container = NSPersistentContainer(name: "CivicFix", managedObjectModel: model)
