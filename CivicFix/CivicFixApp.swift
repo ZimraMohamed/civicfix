@@ -9,7 +9,7 @@ struct CivicFixApp: App {
     @State private var session: SessionStore
 
     init() {
-       
+        // Must run before anything touches Auth.auth().
         #if canImport(FirebaseCore)
         FirebaseApp.configure()
         #endif
@@ -23,7 +23,7 @@ struct CivicFixApp: App {
             Group {
                 switch session.state {
                 case .splash:    SplashView()
-                case .loggedOut: NavigationStack { LoginView() }
+                case .loggedOut: NavigationStack { LoginView() }.readableContentWidth(560)
                 case .loggedIn:  MainTabView()
                 }
             }
