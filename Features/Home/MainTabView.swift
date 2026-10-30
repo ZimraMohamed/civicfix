@@ -1,11 +1,6 @@
 import SwiftUI
 
-/// The signed-in shell.
-/// - iPhone (and iPad in compact multitasking widths): a bottom tab bar.
-/// - iPad (regular width): a sidebar + detail layout (`NavigationSplitView`).
-/// Each destination has its own navigation stack either way.
-/// Home tab (role-aware dashboard): everyone. Report tab (camera + location + hashtags): `.public` users.
-/// Reports tab (review list): `.admin` users.
+
 struct MainTabView: View {
     enum Tab: Hashable {
         case home, report, map, reports, settings
@@ -40,7 +35,7 @@ struct MainTabView: View {
     private var isAdmin: Bool { session.profile?.isAdmin ?? false }
     private var canReport: Bool { session.profile?.has(.public) ?? true }
 
-    /// Tabs this user may see, in display order.
+  
     private var visibleTabs: [Tab] {
         var tabs: [Tab] = [.home]
         if canReport { tabs.append(.report) }
@@ -50,12 +45,12 @@ struct MainTabView: View {
         return tabs
     }
 
-    /// Sidebar layout only on iPad when there is room (not in a narrow Split View / Slide Over).
+    
     private var usesSidebar: Bool {
         UIDevice.current.userInterfaceIdiom == .pad && horizontalSizeClass == .regular
     }
 
-    /// Falls back to Home if the selected tab is no longer allowed (e.g. a role change).
+   
     private var currentSelection: Tab {
         visibleTabs.contains(selection) ? selection : .home
     }
@@ -82,7 +77,7 @@ struct MainTabView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: router.banner)
-        // Start listening for report changes as soon as we are signed in and know the role.
+        
         .task(id: isAdmin) {
             NotificationService.shared.configure()
             if let uid = session.profile?.uid {
@@ -91,11 +86,11 @@ struct MainTabView: View {
         }
         .task { openPendingDestination() }
         .onChange(of: router.destination) { _, _ in openPendingDestination() }
-        // Roles load shortly after launch, so a tapped "new report" push may have to wait for them.
+        
         .onChange(of: isAdmin) { _, _ in openPendingDestination() }
     }
 
-    // MARK: - Compact: bottom tab bar (unchanged behaviour)
+    // bottom tab bar
 
     private var tabLayout: some View {
         TabView(selection: $selection) {
@@ -107,7 +102,7 @@ struct MainTabView: View {
         }
     }
 
-    // MARK: - Regular: sidebar + detail
+    // sidebar + detail
 
     private var sidebarLayout: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -128,14 +123,14 @@ struct MainTabView: View {
         .navigationSplitViewStyle(.balanced)
     }
 
-    // MARK: - Screens
+    // Screens
 
     @ViewBuilder
     private func destination(for tab: Tab) -> some View {
         switch tab {
         case .home:
             NavigationStack {
-                // The Home tab is a role-aware dashboard (admin / officer / public).
+                
                 DashboardView(onReportTapped: { selection = .report })
                     .readableContentWidth()
             }
@@ -151,7 +146,7 @@ struct MainTabView: View {
         }
     }
 
-    /// Jumps to the tab a tapped notification points at.
+   
     private func openPendingDestination() {
         guard let destination = router.destination else { return }
         switch destination {
@@ -166,11 +161,9 @@ struct MainTabView: View {
     }
 }
 
-// MARK: - Responsive width helper
+//  Responsive width helper
 
-/// Keeps content at a comfortable reading width on wide screens (iPad) and centers it.
-/// On iPhone / compact widths it does nothing. Apply it to the root view of a screen,
-/// inside its `NavigationStack`, so the navigation bar still spans the full width.
+
 private struct ReadableContentWidth: ViewModifier {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let maxWidth: CGFloat
