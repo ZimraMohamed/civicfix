@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Landing tab after sign-in. Settings now lives in its own tab (see MainTabView).
+
 struct HomeView: View {
     @Environment(SessionStore.self) private var session
 

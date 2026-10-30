@@ -1,18 +1,14 @@
 import SwiftUI
 import MapKit
 
-/// Community map: every report with a location shown as a color-coded pin.
-/// Tap a pin to open a bottom sheet with the report's photo, details, and —
-/// for officers and admins — quick status buttons.
-///
-/// Requires iOS 17+ (modern `Map` with `MapContentBuilder`).
+
 struct ReportsMapView: View {
     @State private var vm = ReportsMapViewModel()
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var hasFitted = false
     @Environment(SessionStore.self) private var session
 
-    /// Officers and admins can change a report's status from the sheet.
+  
     private var canEdit: Bool {
         session.profile?.isAdmin == true || session.profile?.isOfficer == true
     }

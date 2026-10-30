@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// The signed-in shell: a bottom tab bar. Each tab has its own navigation stack.
-/// Home tab (role-aware dashboard): everyone. Report tab (camera + location + hashtags): `.public` users. Reports tab (review list): `.admin` users.
+
 struct MainTabView: View {
     enum Tab: Hashable { case home, report, map, reports, settings }
 
@@ -15,7 +14,7 @@ struct MainTabView: View {
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                // The Home tab is now a role-aware dashboard (admin / officer / public).
+               
                 DashboardView(onReportTapped: { selection = .report })
             }
             .tabItem { Label("Home", systemImage: "house.fill") }
@@ -58,7 +57,7 @@ struct MainTabView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: router.banner)
-        // Start listening for report changes as soon as we are signed in and know the role.
+       
         .task(id: isAdmin) {
             NotificationService.shared.configure()
             if let uid = session.profile?.uid {
@@ -67,11 +66,11 @@ struct MainTabView: View {
         }
         .task { openPendingDestination() }
         .onChange(of: router.destination) { _, _ in openPendingDestination() }
-        // Roles load shortly after launch, so a tapped "new report" push may have to wait for them.
+       
         .onChange(of: isAdmin) { _, _ in openPendingDestination() }
     }
 
-    /// Jumps to the tab a tapped notification points at.
+    
     private func openPendingDestination() {
         guard let destination = router.destination else { return }
         switch destination {
@@ -79,7 +78,7 @@ struct MainTabView: View {
             selection = .home
             router.destination = nil
         case .adminReports:
-            guard isAdmin else { return }   // keep it pending until roles are known
+            guard isAdmin else { return }   
             selection = .reports
             router.destination = nil
         }

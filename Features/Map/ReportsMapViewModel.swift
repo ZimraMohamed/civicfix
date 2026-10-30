@@ -3,9 +3,7 @@ import SwiftUI
 import MapKit
 
 @MainActor @Observable
-/// Feeds the map screen. Streams every report, keeps only the ones that have
-/// a location, exposes a status filter, and offers optimistic status changes
-/// (same pattern as the officer dashboard).
+
 final class ReportsMapViewModel {
     enum Filter: Hashable {
         case all, status(ReportStatus)
@@ -26,7 +24,7 @@ final class ReportsMapViewModel {
     var errorMessage: String?
     var permissionDenied = false
     var filter: Filter = .all
-    /// The report whose details are showing in the bottom sheet, if any.
+   
     var selectedReport: Report?
 
     private let service: ReportServicing
@@ -35,7 +33,7 @@ final class ReportsMapViewModel {
         self.service = service
     }
 
-    /// Reports that have a location AND match the current filter. Newest first.
+   
     var mappableReports: [Report] {
         reports
             .filter { $0.location != nil }
@@ -45,7 +43,7 @@ final class ReportsMapViewModel {
             }
     }
 
-    /// Count of mappable reports for a given filter (used by the picker labels).
+ 
     func count(for filter: Filter) -> Int {
         let withLocation = reports.filter { $0.location != nil }
         switch filter {
@@ -67,7 +65,7 @@ final class ReportsMapViewModel {
         }
     }
 
-    /// Live list; emits again whenever any report changes. Runs until the view leaves.
+   
     func observe() async {
         do {
             for try await list in service.reportsStream() {
@@ -75,7 +73,7 @@ final class ReportsMapViewModel {
                 hasLoaded = true
                 errorMessage = nil
                 permissionDenied = false
-                // Keep the open sheet in sync if the selected report changed.
+               
                 if let id = selectedReport?.id,
                    let updated = list.first(where: { $0.id == id }) {
                     selectedReport = updated
@@ -87,7 +85,7 @@ final class ReportsMapViewModel {
         }
     }
 
-    /// Optimistic status change; rolls back if the server refuses.
+  
     func setStatus(_ status: ReportStatus, for id: String) async {
         guard let index = reports.firstIndex(where: { $0.id == id }) else { return }
         let previous = reports[index].status
@@ -116,8 +114,7 @@ final class ReportsMapViewModel {
     }
 }
 
-/// Builds a `MKCoordinateRegion` that fits every report location, with padding
-/// so pins don't sit on the edges. Returns nil when there are no locations.
+
 func fittedRegion(for reports: [Report]) -> MKCoordinateRegion? {
     let coords = reports.compactMap { $0.location }
     guard !coords.isEmpty else { return nil }
@@ -130,7 +127,7 @@ func fittedRegion(for reports: [Report]) -> MKCoordinateRegion? {
         latitude: (minLat + maxLat) / 2,
         longitude: (minLon + maxLon) / 2
     )
-    // Pad by 40% and clamp to a sensible minimum so a single pin isn't zoomed all the way in.
+    
     let latDelta = max(maxLat - minLat, 0.02) * 1.4 + 0.01
     let lonDelta = max(maxLon - minLon, 0.02) * 1.4 + 0.01
     return MKCoordinateRegion(
