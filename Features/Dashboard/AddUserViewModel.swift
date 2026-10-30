@@ -1,9 +1,7 @@
 import SwiftUI
 
 @MainActor @Observable
-/// Powers the "Add user" sheet. Validates the form, then asks the service to
-/// create the account on a secondary Firebase app (so the admin's session is
-/// never disturbed).
+
 final class AddUserViewModel {
     var name = ""
     var email = ""

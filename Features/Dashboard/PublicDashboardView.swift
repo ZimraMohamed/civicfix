@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Public dashboard: a community feed of recent reports (reporter anonymized)
-/// plus a "New report" call-to-action that jumps to the Report tab.
+
 struct PublicDashboardView: View {
     var onReportTapped: () -> Void = {}
     @State private var vm = PublicDashboardViewModel()
@@ -94,7 +93,7 @@ struct PublicDashboardView: View {
     }
 }
 
-// MARK: - Row
+
 
 private struct CommunityReportRow: View {
     let report: Report

@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Officer dashboard: a triage queue of open + in-progress reports with
-/// one-tap status shortcuts, plus a count of resolved reports.
+
 struct OfficerDashboardView: View {
     @State private var vm = OfficerDashboardViewModel()
 
@@ -87,7 +86,7 @@ struct OfficerDashboardView: View {
     }
 }
 
-// MARK: - Row
+
 
 private struct OfficerReportRow: View {
     let report: Report

@@ -1,12 +1,7 @@
 import SwiftUI
 
 @MainActor @Observable
-/// Feeds the officer dashboard. Streams every report and exposes the triage
-/// queue (open + in-progress) plus quick status changes.
-///
-/// Note: "assigned to me" isn't possible yet — the report schema has no
-/// `assignedTo` field. Until that lands, the queue is every report still open
-/// or in progress, which is what an officer triages.
+
 final class OfficerDashboardViewModel {
     private(set) var reports: [Report] = []
     private(set) var isLoading = false
@@ -20,7 +15,7 @@ final class OfficerDashboardViewModel {
         self.service = service
     }
 
-    /// Reports the officer still needs to act on, newest first.
+   
     var queue: [Report] {
         reports.filter { $0.status != .resolved }
     }
@@ -41,7 +36,7 @@ final class OfficerDashboardViewModel {
         }
     }
 
-    /// Live list; emits again whenever any report changes. Runs until the view leaves.
+    
     func observe() async {
         do {
             for try await list in service.reportsStream() {
@@ -56,7 +51,7 @@ final class OfficerDashboardViewModel {
         }
     }
 
-    /// Optimistic status change; rolls back if the server refuses.
+    
     func setStatus(_ status: ReportStatus, for id: String) async {
         guard let index = reports.firstIndex(where: { $0.id == id }) else { return }
         let previous = reports[index].status

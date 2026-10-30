@@ -1,10 +1,6 @@
 import SwiftUI
 
-/// Admin dashboard: management entry points.
-///
-/// - Manage users      → `ManageUsersView` (placeholder; full logic comes next)
-/// - Role permissions   → `RolePermissionsView` (placeholder; full logic comes next)
-/// - All reports        → existing `AdminReportsView`
+
 struct AdminDashboardView: View {
     @Environment(SessionStore.self) private var session
 
@@ -95,7 +91,7 @@ struct AdminDashboardView: View {
     }
 }
 
-// MARK: - Tiles
+
 
 private struct DashboardTile: View {
     let title: String

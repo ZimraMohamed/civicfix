@@ -1,9 +1,7 @@
 import SwiftUI
 
 @MainActor @Observable
-/// Feeds the public community feed. Streams every report, anonymizes the
-/// reporter's identity, and caps the list to the 20 most recent so the feed
-/// stays light.
+
 final class PublicDashboardViewModel {
     private(set) var reports: [Report] = []
     private(set) var isLoading = false
@@ -17,7 +15,7 @@ final class PublicDashboardViewModel {
         self.service = service
     }
 
-    /// Newest first, anonymized, capped to 20.
+    
     var feed: [Report] {
         Array(reports.prefix(20)).map { anonymize($0) }
     }

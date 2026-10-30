@@ -1,9 +1,7 @@
 import SwiftUI
 
 @MainActor @Observable
-/// Feeds the Manage Users list. Streams every user from Firestore (newest
-/// first), exposes a search filter, and offers role + disable toggles that
-/// are applied optimistically and rolled back on failure.
+
 final class ManageUsersViewModel {
     private(set) var users: [UserAccount] = []
     private(set) var isLoading = false
@@ -17,7 +15,7 @@ final class ManageUsersViewModel {
         self.service = service
     }
 
-    /// Filtered, searchable subset shown in the list.
+    
     var visibleUsers: [UserAccount] {
         let q = search.trimmingCharacters(in: .whitespaces).lowercased()
         guard !q.isEmpty else { return users }
@@ -54,12 +52,12 @@ final class ManageUsersViewModel {
         }
     }
 
-    /// Optimistically toggles a role on the user; rolls back on failure.
+   
     func toggle(role: UserRole, on user: UserAccount) async {
         guard let index = users.firstIndex(where: { $0.id == user.id }) else { return }
         var updated = users[index]
         if updated.roles.contains(role) {
-            // Never strip the public role from a non-public role toggle
+          
             guard role != .public else { return }
             updated.roles.remove(role)
         } else {
@@ -75,7 +73,7 @@ final class ManageUsersViewModel {
         }
     }
 
-    /// Optimistically toggles the disabled flag; rolls back on failure.
+    
     func toggleDisabled(on user: UserAccount) async {
         guard let index = users.firstIndex(where: { $0.id == user.id }) else { return }
         let newValue = !users[index].disabled

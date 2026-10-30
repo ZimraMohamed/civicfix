@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Admin: list every account (newest first), search by name or email, tap a
-/// row to inspect / edit roles, and add a brand-new account via the toolbar.
+
 struct ManageUsersView: View {
     @State private var vm = ManageUsersViewModel()
     @State private var showingAdd = false
@@ -75,7 +74,7 @@ struct ManageUsersView: View {
     }
 }
 
-// MARK: - Row
+
 
 private struct UserRow: View {
     let user: UserAccount

@@ -1,8 +1,6 @@
 import SwiftUI
 
-/// Drill-in screen for a single user. Shows the account summary and lets an
-/// admin grant/revoke the officer and admin roles, or soft-disable the
-/// account. Optimistic — changes roll back if the server refuses.
+
 struct UserDetailView: View {
     let user: UserAccount
     @Bindable var vm: ManageUsersViewModel
