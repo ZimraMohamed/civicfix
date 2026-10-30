@@ -1,20 +1,18 @@
 import SwiftUI
 import MapKit
 
-/// Lets the user manually drop a pin when GPS is unavailable or stuck.
-/// Shown from the Report screen via a sheet. Tap the map to pick a spot,
-/// then "Use this location".
+
 struct LocationPickerView: View {
-    /// Set by the parent.
+  
     var onPicked: (ReportLocation) -> Void
 
     @State private var cameraPosition: MapCameraPosition
     @State private var picked: CLLocationCoordinate2D?
-    /// Manual picks report a fixed ~30 m accuracy.
+   
     private let manualAccuracy: Double = 30
     @Environment(\.dismiss) private var dismiss
 
-    /// Defaults to Apple Park so the picker has somewhere to start on the Simulator.
+    
     init(initial: ReportLocation? = nil, onPicked: @escaping (ReportLocation) -> Void) {
         self.onPicked = onPicked
         let coord = initial.map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }

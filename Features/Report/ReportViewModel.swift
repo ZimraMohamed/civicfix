@@ -36,7 +36,7 @@ final class ReportViewModel {
         }
     }
 
-    /// Turns "#brokenbench, #urgent" typed by the user into tags.
+    
     func addTagsFromInput() {
         for tag in HashTag.parse(tagInput) where !hashtags.contains(tag) {
             guard hashtags.count < HashTag.maxCount else {

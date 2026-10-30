@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 import MapKit
 
-/// Public users file a report here: photo from the camera, optional location, details and hashtags.
+
 struct ReportView: View {
     @State private var vm = ReportViewModel()
     @State private var showCamera = false
@@ -76,7 +76,7 @@ struct ReportView: View {
         }
     }
 
-    // MARK: - Photo
+  
 
     @ViewBuilder private var photoContent: some View {
         if let image = vm.image {
@@ -125,7 +125,7 @@ struct ReportView: View {
         if CameraPicker.isAvailable { showCamera = true } else { showCameraUnavailable = true }
     }
 
-    // MARK: - Location
+    
 
     @ViewBuilder private var locationContent: some View {
         @Bindable var vm = vm
@@ -160,7 +160,7 @@ struct ReportView: View {
                     Spacer(minLength: 0)
                 }
                 // Always offer the manual pick — works even while GPS is still locating,
-                // so the simulator (or a slow device) never blocks the user.
+                
                 Button {
                     showPicker = true
                 } label: {
@@ -237,7 +237,7 @@ struct ReportView: View {
         }
     }
 
-    // MARK: - Details
+    
 
     @ViewBuilder private var detailsContent: some View {
         @Bindable var vm = vm
@@ -256,7 +256,7 @@ struct ReportView: View {
         .padding(16)
     }
 
-    // MARK: - Hashtags
+   
 
     @ViewBuilder private var hashtagContent: some View {
         @Bindable var vm = vm
@@ -306,7 +306,7 @@ struct ReportView: View {
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
-    // MARK: - Layout helper
+   
 
     private func section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
         VStack(alignment: .leading, spacing: AppSpacing.labelToInput) {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Lays children out left-to-right and wraps onto new lines, like text. Used for hashtag chips.
+
 struct FlowLayout: Layout {
     var spacing: CGFloat = 8
 

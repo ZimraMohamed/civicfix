@@ -9,7 +9,7 @@ struct CivicFixApp: App {
     @State private var session: SessionStore
 
     init() {
-        // Must run before anything touches Auth.auth().
+       
         #if canImport(FirebaseCore)
         FirebaseApp.configure()
         #endif

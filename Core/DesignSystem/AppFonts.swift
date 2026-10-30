@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Uses Dynamic Type text styles so the UI scales with accessibility settings.
-/// To use Inter instead: Font.custom("Inter-Bold", size: 28, relativeTo: .title)
+
 enum AppFonts {
     static let screenTitle = Font.title.weight(.bold)
     static let subtitle    = Font.subheadline

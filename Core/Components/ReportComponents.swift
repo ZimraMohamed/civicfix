@@ -1,9 +1,6 @@
 import SwiftUI
 
-/// Shared report UI bits used by the admin, officer, and public dashboards.
-/// Extracted so the same look is reused everywhere (previously duplicated in AdminReportsView).
 
-/// Square thumbnail for a report photo. Shows a placeholder when there's no image.
 struct ReportThumbnail: View {
     let data: Data?
 
@@ -21,7 +18,7 @@ struct ReportThumbnail: View {
     }
 }
 
-/// Coloured pill that shows a report's status with its icon.
+
 struct StatusBadge: View {
     let status: ReportStatus
 
@@ -43,7 +40,7 @@ struct StatusBadge: View {
     }
 }
 
-/// Compact stat tile used on the officer and public dashboards.
+
 struct StatChip: View {
     let title: String
     let value: Int
@@ -69,7 +66,7 @@ struct StatChip: View {
     }
 }
 
-/// "12 Oct 2026, 09:41" — or "Just now" when there's no timestamp yet.
+
 func reportDateText(_ date: Date?) -> String {
     date?.formatted(date: .abbreviated, time: .shortened) ?? "Just now"
 }

@@ -12,8 +12,7 @@ extension Color {
         )
     }
 
-    /// A color that resolves to `light` or `dark` depending on the current interface style.
-    /// It follows `.preferredColorScheme`, so the in-app appearance setting works.
+   
     init(light: UInt32, dark: UInt32) {
         self.init(uiColor: UIColor { traits in
             let hex = traits.userInterfaceStyle == .dark ? dark : light

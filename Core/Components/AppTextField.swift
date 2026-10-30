@@ -8,7 +8,7 @@ struct AppTextField: View {
     @Binding var text: String
     var type: FieldType = .plain
     var errorMessage: String? = nil
-    /// Use `.newPassword` on register screens for iOS password suggestions.
+    
     var contentTypeOverride: UITextContentType? = nil
 
     @FocusState private var isFocused: Bool

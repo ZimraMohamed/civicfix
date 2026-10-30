@@ -4,7 +4,7 @@ import SwiftUI
 enum AppAppearance: String, CaseIterable, Identifiable {
     case system, light, dark
 
-    /// UserDefaults key, shared by `@AppStorage` in the app root and Settings screen.
+    
     static let storageKey = "civicfix.appearance"
 
     var id: String { rawValue }

@@ -1,8 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// Opens the system camera and hands back the captured photo.
-/// Requires `NSCameraUsageDescription` in Info.plist.
+
 struct CameraPicker: UIViewControllerRepresentable {
     static var isAvailable: Bool { UIImagePickerController.isSourceTypeAvailable(.camera) }
 
@@ -38,7 +37,7 @@ struct CameraPicker: UIViewControllerRepresentable {
 }
 
 extension UIImage {
-    /// Shrinks until the JPEG fits in `maxBytes`, so it can live inside a Firestore document.
+    
     func jpegData(under maxBytes: Int) -> Data? {
         for dimension: CGFloat in [1024, 800, 640, 480] {
             for quality: CGFloat in [0.7, 0.5, 0.35] {
@@ -50,8 +49,7 @@ extension UIImage {
         return nil
     }
 
-    /// Scales the longest side down to `maxDimension` and encodes as JPEG, so uploads stay small.
-    /// Drawing also bakes in the camera's orientation.
+    
     func resizedJPEG(maxDimension: CGFloat = 1600, quality: CGFloat = 0.8) -> Data? {
         let longest = max(size.width, size.height)
         guard longest > 0 else { return nil }

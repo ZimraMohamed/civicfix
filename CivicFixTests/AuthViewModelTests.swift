@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import CivicFix
 
-// MARK: - Login
+// Login
 
 @MainActor
 struct LoginViewModelTests {
@@ -112,7 +112,7 @@ struct LoginViewModelTests {
     }
 }
 
-// MARK: - Register
+// Register
 
 @MainActor
 struct RegisterViewModelTests {
@@ -221,7 +221,7 @@ struct ForgotPasswordViewModelTests {
     }
 }
 
-// MARK: - Change e-mail
+// Change e-mail
 
 @MainActor
 struct ChangeEmailViewModelTests {
@@ -281,7 +281,7 @@ struct ChangeEmailViewModelTests {
     }
 }
 
-// MARK: - Change password
+// Change password
 
 @MainActor
 struct ChangePasswordViewModelTests {

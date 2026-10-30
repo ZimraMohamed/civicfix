@@ -1,7 +1,7 @@
 import SwiftUI
 import UserNotifications
 
-/// Profile + settings: account info, theme, change email/password, sign out.
+
 struct SettingsView: View {
     @Environment(SessionStore.self) private var session
     @Environment(\.scenePhase) private var scenePhase
