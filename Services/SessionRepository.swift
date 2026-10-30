@@ -1,19 +1,19 @@
 import CoreData
 import OSLog
 
-/// The signed-in user as the app sees it.
+
 nonisolated struct UserProfile: Equatable, Sendable {
     var uid: String
     var email: String
     var displayName: String
-    /// Everyone is at least `.public`. Filled in from Firestore after sign-in.
+    
     var roles: Set<UserRole> = [.public]
 
     func has(_ role: UserRole) -> Bool { roles.contains(role) }
     var isAdmin: Bool { has(.admin) }
     var isOfficer: Bool { has(.officer) }
 
-    /// "Ahsan Ilyas" -> "AI". Falls back to the first letter of the email.
+    
     var initials: String {
         let parts = displayName.split(separator: " ").prefix(2).compactMap(\.first)
         if !parts.isEmpty { return String(parts).uppercased() }
@@ -21,14 +21,14 @@ nonisolated struct UserProfile: Equatable, Sendable {
     }
 }
 
-/// Stores the login session on disk so the app can restore it instantly on launch.
+
 protocol SessionRepository {
     func load() -> UserProfile?
     func save(_ profile: UserProfile)
     func clear()
 }
 
-/// Core Data implementation. Holds at most one `UserSession` row.
+
 final class CoreDataSessionRepository: SessionRepository {
     private let context: NSManagedObjectContext
     private let log = Logger(subsystem: "com.lozaa.CivicFix", category: "session")
@@ -45,7 +45,7 @@ final class CoreDataSessionRepository: SessionRepository {
 
     func save(_ profile: UserProfile) {
         let rows = fetchRows()
-        // Keep exactly one row; drop strays from older sessions.
+       
         rows.dropFirst().forEach(context.delete)
         let row = rows.first ?? UserSession(context: context)
         if row.signedInAt == nil || row.uid != profile.uid { row.signedInAt = Date() }
@@ -73,7 +73,7 @@ final class CoreDataSessionRepository: SessionRepository {
     }
 }
 
-/// In-memory stand-in for previews and unit tests.
+
 final class InMemorySessionRepository: SessionRepository {
     private var profile: UserProfile?
     init(profile: UserProfile? = nil) { self.profile = profile }

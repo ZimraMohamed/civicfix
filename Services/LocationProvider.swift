@@ -1,11 +1,7 @@
 import CoreLocation
 import Observation
 
-/// One-shot "where am I?" helper. Requires `NSLocationWhenInUseUsageDescription` in Info.plist.
-///
-/// Includes a 10-second timeout so the UI never hangs forever — important on
-/// the Simulator, where `requestLocation()` may never call back because there
-/// is no real GPS fix to return.
+
 @MainActor @Observable
 final class LocationProvider: NSObject, CLLocationManagerDelegate {
     enum Status { case idle, locating, ready, denied, failed }
@@ -14,9 +10,9 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
     private(set) var location: ReportLocation?
 
     private let manager = CLLocationManager()
-    /// Cancelled when a fix arrives, fails, or the user changes auth.
+    
     private var timeoutTask: Task<Void, Never>?
-    /// How long to wait for a fix before giving up.
+    
     private let timeout: Duration = .seconds(10)
 
     override init() {
@@ -25,14 +21,14 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     }
 
-    /// Asks for permission if needed, then fetches a single fix.
+   
     func request() {
         guard status != .locating else { return }
         switch manager.authorizationStatus {
         case .notDetermined:
             status = .locating
             startTimeout()
-            manager.requestWhenInUseAuthorization()   // continues in locationManagerDidChangeAuthorization
+            manager.requestWhenInUseAuthorization()
         case .denied, .restricted:
             status = .denied
         default:
@@ -42,15 +38,14 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    /// Lets the user (or a test) supply a location manually — used when GPS is
-    /// unavailable (e.g. the Simulator) and the user picks a spot on the map.
+    
     func setManual(_ place: ReportLocation) {
         cancelTimeout()
         location = place
         status = .ready
     }
 
-    // MARK: - CLLocationManagerDelegate (called off the main actor)
+    
 
     nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let auth = manager.authorizationStatus
@@ -77,7 +72,7 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    // MARK: - Private
+   
 
     private func authorizationChanged(_ auth: CLAuthorizationStatus) {
         guard status == .locating else { return }     // ignore the callback fired at start-up

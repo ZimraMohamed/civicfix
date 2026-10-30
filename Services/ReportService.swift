@@ -15,20 +15,19 @@ nonisolated enum ReportError: LocalizedError {
 }
 
 nonisolated protocol ReportServicing: Sendable {
-    /// Uploads the photo, then saves the report (details, hashtags, location) to Firestore.
+    
     func submit(_ draft: ReportDraft) async throws
 
-    /// Newest first. Admin only (enforced by Firestore rules).
+    
     func loadReports() async throws -> [Report]
-    /// Admin only (enforced by Firestore rules).
+   
     func updateStatus(ofReport id: String, to status: ReportStatus) async throws
-    /// Live list, newest first: emits again whenever any report changes. Admin only.
+    
     func reportsStream() -> AsyncThrowingStream<[Report], Error>
 }
 
 enum ReportServiceFactory {
-    /// Firebase when Auth and Firestore are linked. Otherwise a service that fails loudly,
-    /// so a build without Firebase can never pretend a report was saved.
+    
     static func make() -> ReportServicing {
         #if canImport(FirebaseAuth) && canImport(FirebaseFirestore)
         return FirebaseReportService()
@@ -38,7 +37,7 @@ enum ReportServiceFactory {
     }
 }
 
-/// Always fails with `.notConfigured`.
+
 nonisolated struct UnavailableReportService: ReportServicing {
     func submit(_ draft: ReportDraft) async throws { throw ReportError.notConfigured }
     func loadReports() async throws -> [Report] { throw ReportError.notConfigured }
@@ -48,7 +47,7 @@ nonisolated struct UnavailableReportService: ReportServicing {
     }
 }
 
-/// Fake backend for tests and previews you inject by hand. Saves nothing.
+
 nonisolated struct MockReportService: ReportServicing {
     func submit(_ draft: ReportDraft) async throws {
         try await Task.sleep(for: .seconds(1))

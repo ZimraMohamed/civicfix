@@ -4,12 +4,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import OSLog
 
-/// Saves a report as one Firestore document: `reports/{autoId}`. No Firebase Storage needed.
-///
-///   uid, userName, userEmail, details, hashtags [String],
-///   imageData (bytes, JPEG under ~600 KB so the document stays below Firestore's 1 MiB limit),
-///   location (GeoPoint, optional), locationAccuracy (Double, optional),
-///   status ("open"), createdAt (server timestamp)
+
 nonisolated struct FirebaseReportService: ReportServicing {
     private let log = Logger(subsystem: "com.lozaa.CivicFix", category: "reports")
 
@@ -40,7 +35,6 @@ nonisolated struct FirebaseReportService: ReportServicing {
         }
     }
 
-    // MARK: - Admin
 
     func loadReports() async throws -> [Report] {
         do {
@@ -52,7 +46,7 @@ nonisolated struct FirebaseReportService: ReportServicing {
         } catch { throw map(error) }
     }
 
-    /// Live version of `loadReports()`: emits the full list again every time a report is added or changes.
+   
     func reportsStream() -> AsyncThrowingStream<[Report], Error> {
         AsyncThrowingStream { continuation in
             nonisolated(unsafe) let registration = Firestore.firestore().collection("reports")

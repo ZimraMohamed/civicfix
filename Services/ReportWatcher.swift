@@ -3,12 +3,7 @@ import OSLog
 #if canImport(FirebaseFirestore)
 import FirebaseFirestore
 
-/// Listens to Firestore in real time while the app is running and raises a local notification:
-///   • every user: one of *their* reports changed status
-///   • admins:     someone else submitted a new report
-///
-/// Needs no server. Limitation: it only works while the app process is alive
-/// (foreground, or shortly after it goes to the background).
+
 @MainActor
 final class ReportWatcher {
     static let shared = ReportWatcher()
@@ -44,7 +39,7 @@ final class ReportWatcher {
         notifiedNewReports = []
     }
 
-    // MARK: - Reporter: status changed on my report
+
 
     private func watchOwnReports(uid: String) {
         let query = Firestore.firestore().collection("reports").whereField("uid", isEqualTo: uid)
@@ -60,7 +55,7 @@ final class ReportWatcher {
     }
 
     private func handleOwn(_ snapshot: QuerySnapshot) {
-        // First snapshot is the starting point, not news.
+        
         log.info("Own reports snapshot: \(snapshot.documents.count) docs, \(snapshot.documentChanges.count) changes, fromCache=\(snapshot.metadata.isFromCache)")
         if !ownBaselineDone {
             for doc in snapshot.documents { knownStatuses[doc.documentID] = doc.data()["status"] as? String }
@@ -95,7 +90,7 @@ final class ReportWatcher {
         }
     }
 
-    // MARK: - Admin: a new report arrived
+  
 
     private func watchNewReports(excluding myUID: String) {
         // Only reports created after we started listening, so we never download the whole backlog.
@@ -137,7 +132,7 @@ final class ReportWatcher {
     }
 }
 #else
-/// Firebase not linked: nothing to watch.
+
 @MainActor
 final class ReportWatcher {
     static let shared = ReportWatcher()

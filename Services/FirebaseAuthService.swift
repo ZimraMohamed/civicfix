@@ -3,8 +3,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-/// Firebase Authentication backend. Firebase keeps the login itself in the Keychain
-/// and refreshes tokens automatically; `SessionStore` mirrors the user into Core Data.
+
 nonisolated struct FirebaseAuthService: AuthServicing {
     private let credentials = KeychainCredentialStore()
 
@@ -30,8 +29,7 @@ nonisolated struct FirebaseAuthService: AuthServicing {
             let change = result.user.createProfileChangeRequest()
             let cleanName = name.trimmingCharacters(in: .whitespacesAndNewlines)
             change.displayName = cleanName
-            try? await change.commitChanges()   // account exists; a name hiccup shouldn't fail sign-up
-            // Every new account starts as a plain public user.
+            try? await change.commitChanges()
             try? await createUserDocument(uid: result.user.uid, name: cleanName, email: email)
             credentials.save(email: email, password: password)
         } catch { throw map(error) }
@@ -44,15 +42,14 @@ nonisolated struct FirebaseAuthService: AuthServicing {
         } catch { throw map(error) }
     }
 
-    /// Face ID: reuse the live Firebase session if there is one, otherwise sign in
-    /// with the credentials saved in the Keychain.
+    
     func restoreSession() async throws {
         if isLoggedIn { return }
         guard let saved = credentials.load() else { throw AuthError.noSavedSession }
         do {
             _ = try await Auth.auth().signIn(withEmail: saved.email, password: saved.password)
         } catch {
-            credentials.clear()          // password changed elsewhere; require a fresh sign in
+            credentials.clear()
             throw AuthError.noSavedSession
         }
     }
@@ -68,8 +65,7 @@ nonisolated struct FirebaseAuthService: AuthServicing {
         }
         do {
             try await reauthenticate(user, email: oldEmail, password: currentPassword)
-            // updateEmail(to:) is deprecated and rejected by projects with email-enumeration
-            // protection (the default). This sends a link; the address changes once it's tapped.
+            
             try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
         } catch { throw map(error, reauth: true) }
     }
@@ -86,10 +82,9 @@ nonisolated struct FirebaseAuthService: AuthServicing {
     }
 
     func signOut() {
-        try? Auth.auth().signOut()       // keychain credentials stay so Face ID still works
+        try? Auth.auth().signOut()
     }
 
-    // MARK: - Roles (Firestore: users/{uid})
 
     private var users: CollectionReference { Firestore.firestore().collection("users") }
 
@@ -101,12 +96,12 @@ nonisolated struct FirebaseAuthService: AuthServicing {
                 let raw = snapshot.data()?["roles"] as? [String] ?? []
                 return Set(raw.compactMap(UserRole.init(rawValue:))).union([.public])
             }
-            // Account created before roles existed: give it the default record.
+            
             try await createUserDocument(uid: user.uid,
                                          name: user.displayName ?? "",
                                          email: user.email ?? "")
         } catch {
-            // Offline or rules problem: stay safe with the lowest role.
+            
         }
         return [.public]
     }
@@ -126,15 +121,13 @@ nonisolated struct FirebaseAuthService: AuthServicing {
         ])
     }
 
-    // MARK: - Helpers
 
     private func reauthenticate(_ user: User, email: String, password: String) async throws {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         try await user.reauthenticate(with: credential)
     }
 
-    /// Translates Firebase errors into messages we control.
-    /// `reauth` is true when a bad credential means "wrong current password".
+    
     private func map(_ error: Error, reauth: Bool = false) -> AuthError {
         if let known = error as? AuthError { return known }
         let ns = error as NSError

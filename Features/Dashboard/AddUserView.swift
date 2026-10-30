@@ -1,8 +1,6 @@
 import SwiftUI
 
-/// Admin form to create a brand-new account. Lives in a sheet so the admin's
-/// own session is never disturbed — creation happens on a secondary Firebase
-/// app instance inside `FirebaseUserService.createUser`.
+
 struct AddUserView: View {
     @State private var vm = AddUserViewModel()
     @Environment(\.dismiss) private var dismiss

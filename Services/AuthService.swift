@@ -23,30 +23,28 @@ nonisolated enum AuthError: LocalizedError {
 
 nonisolated protocol AuthServicing: Sendable {
     var isLoggedIn: Bool { get }
-    /// The signed-in user, or nil.
+    
     var currentUser: UserProfile? { get }
 
     func signIn(email: String, password: String) async throws
     func register(name: String, email: String, password: String) async throws
     func sendPasswordReset(email: String) async throws
     func restoreSession() async throws
-    /// Re-fetches the user from the server (e.g. to pick up a verified e-mail change). Never throws.
+    
     func reloadUser() async
-    /// Re-authenticates, then sends a verification link to `newEmail`.
-    /// The address changes only after the user taps that link.
+    
     func changeEmail(to newEmail: String, currentPassword: String) async throws
     func changePassword(current: String, new: String) async throws
     func signOut()
 
-    /// Reads the signed-in user's roles. Never throws; falls back to `[.public]`.
+    
     func loadRoles() async -> Set<UserRole>
-    /// Admin only (enforced by Firestore rules). `.public` is always kept.
+   
     func setRoles(for uid: String, to roles: Set<UserRole>) async throws
 }
 
 enum AuthServiceFactory {
-    /// Uses Firebase when the Firebase packages are linked, otherwise the offline mock,
-    /// so the project builds before and after you add Firebase.
+    
     static func make() -> AuthServicing {
         #if canImport(FirebaseAuth) && canImport(FirebaseFirestore)
         return FirebaseAuthService()
@@ -56,7 +54,7 @@ enum AuthServiceFactory {
     }
 }
 
-/// Offline fake backend for previews, tests, and builds without Firebase.
+
 nonisolated struct MockAuthService: AuthServicing {
     private let sessionKey = "civicfix.mock.hasSession"
     private let signedInBeforeKey = "civicfix.mock.hasSignedInBefore"
@@ -100,7 +98,7 @@ nonisolated struct MockAuthService: AuthServicing {
         guard currentPassword == defaults.string(forKey: passwordKey) else {
             throw AuthError.wrongCurrentPassword
         }
-        defaults.set(newEmail, forKey: emailKey)   // the real service waits for verification
+        defaults.set(newEmail, forKey: emailKey)   
     }
 
     func changePassword(current: String, new: String) async throws {

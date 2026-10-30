@@ -1,6 +1,6 @@
 import Foundation
 
-/// Error surface for the admin user-management service.
+
 nonisolated enum UserAdminError: LocalizedError {
     case emailInUse, weakPassword, invalidEmail, network, permissionDenied, notSignedIn, unknown
 
@@ -17,26 +17,23 @@ nonisolated enum UserAdminError: LocalizedError {
     }
 }
 
-/// Admin-side user management. Read the list of users, create new accounts
-/// (without disturbing the admin's own session), and toggle roles / disable.
+
 nonisolated protocol UserServicing: Sendable {
-    /// Live list, newest first: emits again whenever any user changes. Admin only.
+    
     func usersStream() -> AsyncThrowingStream<[UserAccount], Error>
-    /// One-shot fetch, newest first. Admin only.
+    
     func loadUsers() async throws -> [UserAccount]
-    /// Creates a new account as the admin — does NOT sign the admin out.
-    /// Writes the user doc with the given roles. Admin only.
+    
     func createUser(name: String, email: String, password: String,
                     roles: Set<UserRole>) async throws
-    /// Replace the user's roles (`.public` is always added). Admin only.
+    
     func setRoles(for uid: String, to roles: Set<UserRole>) async throws
-    /// Toggle the account's `disabled` flag (soft-disable). Admin only.
+    
     func setDisabled(_ disabled: Bool, for uid: String) async throws
 }
 
 enum UserServiceFactory {
-    /// Uses Firebase when the Firebase packages are linked; otherwise the mock,
-    /// so the project builds before and after you add Firebase.
+    
     static func make() -> UserServicing {
         #if canImport(FirebaseAuth) && canImport(FirebaseFirestore)
         return FirebaseUserService()
@@ -46,7 +43,7 @@ enum UserServiceFactory {
     }
 }
 
-/// Offline fake for previews, tests, and builds without Firebase.
+
 nonisolated final class MockUserService: UserServicing, @unchecked Sendable {
     private let lock = NSLock()
     private var users: [UserAccount] = []

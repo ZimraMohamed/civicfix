@@ -1,8 +1,6 @@
 import Foundation
 import Security
 
-/// Keeps the last-used e-mail and password in the Keychain so Face ID can sign in again
-/// after the user has explicitly signed out. Encrypted by iOS, this-device-only, never synced.
 nonisolated struct KeychainCredentialStore: Sendable {
     struct Credentials: Sendable { let email: String; let password: String }
 
